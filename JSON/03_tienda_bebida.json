@@ -1,0 +1,23 @@
+[
+   {
+     "nombre" : "Carla",
+     "bebida" : "Café Expreso",
+     "cantidad" : 2,
+     "stock" : 80,
+     "disponible" : true
+   },
+   {
+     "nombre" : "Jhon",
+     "bebida" : "Café Americano",
+     "cantidad" : 3,
+     "stock" : 0,
+     "disponible" : false
+   },
+   {
+     "nombre" : "Jhon",
+     "bebidas" : "Café Latte",
+     "cantidad" : 1,
+     "stock" : 15,
+     "disponible" : true
+   }
+]

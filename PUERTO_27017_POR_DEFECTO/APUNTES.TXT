@@ -1,0 +1,17 @@
+- LEVANTAR EL SERVIDOR
+
+1. Esto ya esta realizado como servicio.
+2. Lo podemos ver si en el buscador de windows buscamos "servicio"
+3. Luego buscamos en la columna Nombre buscamos "MongoDB Server (MongoDB)"
+4. Botón derecho en el nombre anterior y vemos que esta iniciado
+5. Botón derecho en el nombre anterior y en propiedades podemos ver el código que lo nicia que es este:
+   "C:\Program Files\MongoDB\Server\7.0\bin\mongod.exe" --config "C:\Program Files\MongoDB\Server\7.0\bin\mongod.cfg" --service
+6. Podemos ver que hay una ruta hacia un archivo "mongod.cfg" en dicho archivo podemos ver el puerto por donde sale que podemos cambiarlo también podemos ver la carpeta "data" donde esta creada
+
+- LEVANTAR EL CLIENTE (PRIMERA VENTANA CMD)
+
+mongosh.exe
+
+- CREAR UNA BASE DE DATOS A PARTIR DE UN SCRIPT (SEGUNDA VENTANA CMD)
+
+mongosh.exe --file bdscript.js

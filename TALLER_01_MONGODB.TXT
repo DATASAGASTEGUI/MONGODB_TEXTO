@@ -1,0 +1,399 @@
+****************
+***   0001   ***
+****************
+
+(1)
+
+test>cls;
+test>show dbs;
+test>show databases;
+
+(2)
+
+test> use bd01;
+bd01> db.dropDatabase()
+
+****************
+***   0002   ***  CREAR UNA BASE DE DATOS DE DOS MANERAS
+****************
+
+(1)
+
+test>use cafeteria_1;
+cafeteria>show dbs;
+
+# Crear una coleccion durante la inserccion de un documento
+cafeteria_1> db.tipo_cafe.inserteOne({
+  "nombre": "Carla",
+  "bebida": "Café Expreso",
+  "cantidad": 2,
+  "stock": 80,
+  "disponible": true
+});
+cafeteria_1>show dbs;
+
+cafeteria_1>show collections
+
+cafeteria_1>db.tipo_cafe.find()
+
+(2)
+
+test>use cafeteria_2;
+cafeteria_2>db.createCollection("tipo_cafe");  # Crear una coleccion sin insertar documentos
+cafeteria_2>show dbs;
+cafeteria_2>show collections; 
+cafeteria_2>db.tipo_cafe.find();
+
+****************
+***   0003   *** INSERTAR MUCHOS DOCUMENTOS
+****************
+
+cafeteria_2> db.tipo_cafe.insertMany([
+    {
+        "nombre" : "Jhon",
+        "bebida" : "Café Americano ",
+        "cantidad" : 3,
+        "stock" : 0,
+        "disponible" : false
+    },
+    {
+        "nombre" : "Jhon",
+        "bebidas" : "Café Latte ",
+        "cantidad" : 1,
+        "stock" : 15,
+        "disponible" : true
+    }
+]);
+
+****************
+***   0004   ***   PONER MANUALMENTE EL _ID
+****************
+
+cafeteria_2> var documento = {_id: 1,
+                              nombre: "Alejandra",
+                              bebida: "Cappuccino", 
+							  cantidad: 2, 
+							  stock: 12, 
+							  disponible: true}
+cafeteria_2> documento
+cafeteria_2> db.tipo_cafe.insertOne(documento);
+cafeteria_2> db.tipo_cafe.find();
+
+cafeteria_2> db.tipoCafe.insertOne({_id: "Nuevo Id", 
+                                    nombre: "Gary",
+									bebida: "Café Latte",
+									cantidad: 1, 
+									stock: 15, 
+									disponible: true});
+									
+****************
+***   0005   ***   OPERACION CRUD: READ
+****************
+
+test>show dbs;
+test>use cafeteria_2;
+cafeteria_2>show collections
+cafeteria_2>db.tipo_cafe.find()
+cafeteria_2>db.tipo_cafe.find().pretty() 
+
+****************
+***   0006   ***   OPERACION CRUD: CREATE
+****************     
+
+cafeteria_2>db.tipo_cafe.insertOne({nombre: "Ana", 
+                                    bebida: "Chocolate con Menta"});      
+cafeteria_2>db.tipo_cafe.find(); 
+
+****************
+***   0007   ***   OPERACION CRUD: UPDATE
+**************** 
+
+cafeteria_2>db.tipo_cafe.updateOne({nombre: "Jhon"},{$set:{etiqueta: "Atendido"}});    
+cafeteria_2>db.tipo_cafe.find(); 
+
+****************
+***   0008   ***   OPERACION CRUD: DELETE
+****************
+
+cafeteria_2>db.tipo_cafe.deleteOne({_id: 1})
+cafeteria_2>db.tipo_cafe.find()
+
+cafeteria_2>db.tipo_cafe.deleteOne({_id: "Nuevo Id"})
+cafeteria_2>db.tipo_cafe.find()
+
+cafeteria_2>db.tipo_cafe.deleteMany({})       (Eliminar todos los documentos de una colección)
+cafeteria_2>db.tipo_cafe.find() 
+
+****************
+***   0009   ***   PROFUNDIZANDO READ (BUSCAR)
+**************** 
+
+cafeteria_2> db.tipo_cafe.find()           				
+cafeteria_2> db.tipo_cafe.find({})         				
+
+cafeteria_2> db.tipo_cafe.find().pretty()				
+
+cafeteria_2> db.tipo_cafe.find({nombre: "Frank"})  		
+cafeteria_2> db.tipo_cafe.find({nombre: "Carla"}) 
+cafeteria_2> db.tipo_cafe.find({stock: 15})
+cafeteria_2> db.tipo_cafe.find({disponible: false})  
+
+****************
+***   0010   ***   PROFUNDIZANDO UPDATE (ONE Y MANY)
+**************** 
+
+- ACTUALIZAR UN DOCUMENTO POR SU _ID YA QUE ESTE VALOR ES UNICO
+
+cafeteria_2>db.tipoCafe.find()   # Mostrar todos los documentos para ver y seleccionar el _id
+
+cafeteria_2>db.tipo_cafe.updateOne({_id: ObjectId('659c7cf5fec81003ac970d97')},{$set: {etiqueta: "Atendido"}})  # Buscamos el _id y modificamos el valor de la clave etiqueta pero si no se encuentra la clave lo añade
+          
+cafeteria_2>db.tipo_cafe.find({_id: ObjectId('659c7cf5fec81003ac970d97')}) # Mostramos el documento con el _id para ver el resultado
+   
+cafeteria_2> db.tipo_cafe.updateOne({_id: ObjectId('659c7cf5fec81003ac970d97')},{$set: {etiqueta: "Atendido"}}) # Buscamos el _id y modificamos el valor de la clave etiqueta pero al no tener cambios no hace nada 
+
+cafeteria_2> db.tipo_cafe.updateOne({disponible: true},{$set: {precio: 5}}) 
+
+cafeteria_2> db.tipo_cafe.updateOne({_id: ObjectId('659c7cf5fec81003ac970d97')},{$set: {nombre: "Isabel"}}) 
+
+- ACTUALIZAR VARIOS DOCUMENTOS CON UPDATEMANY PERO TAMBIEN AGREGA CAMPOS SI ESTOS NO EXISTEN.
+
+cafeteria_2> db.tipo_cafe.updateMany({nombre: "Jhon"},{$set: {etiqueta: "No atendido"}})  
+
+****************
+***   0011   ***   APRENDIENDO SOBRE FIND() Y CURSOR OBJECT
+****************  
+
+test>use cafeteria_2 # Cambiar de base de datos
+cafeteria_2>db.tipo_cafe.deleteMany({}) # Eliminar todos los documentos de una colección
+cafeteria_2>db.tipo_cafe.find() # Mostrar para verificar que se han eliminados todos los documentos
+
+# # Crear la coleccion durante la inserción de los documentos
+cafeteria_2>db.empleado.insertMany([
+    {
+        "nombre": "Mike Smith",
+        "email": "smith@example.com"
+    },
+    {
+        "nombre": "Johnson Gomez",
+        "email": "johnson@example.com"
+    },
+    {
+        "nombre": "Williams Evans",
+        "email": "williams@example.com"
+    },
+    {
+        "nombre": "Brown Phillips",
+        "email": "brown@example.com"
+    },
+    {
+        "nombre": "Jones Turner",
+        "email": "jones@example.com"
+    },
+    {
+        "nombre": "Garcia Diaz",
+        "email": "garcia@example.com"
+    },
+    {
+        "nombre": "Miller Cruz",
+        "email": "miller@example.com"
+    },
+    {
+        "nombre": "Davis Collins",
+        "email": "davis@example.com"
+    },
+    {
+        "nombre": "Rodriguez Cook",
+        "email": "rodriguez@example.com"
+    },
+    {
+        "nombre": "Martinez Cooper",
+        "email": "martinez@example.com"
+    },
+    {
+        "nombre": "Hernandez Bailey",
+        "email": "hernandez@example.com"
+    },
+    {
+        "nombre": "Alan Lopez ",
+        "email": "alan@example.com"
+    },
+    {
+        "nombre": "Joe Gonzalez ",
+        "email": "joe@example.com"
+    },
+    {
+        "nombre": "Wilson kim",
+        "email": "wilson@example.com"
+    },
+    {
+        "nombre": "Anderson Ramos",
+        "email": "anderson@example.com"
+    },
+    {
+        "nombre": "Thomas Watson",
+        "email": "thomas@example.com"
+    },
+    {
+        "nombre": "Taylor Ruiz",
+        "email": "taylor@example.com"
+    },
+    {
+        "nombre": "Jackson Myers",
+        "email": "jackson@example.com"
+    },
+    {
+        "nombre": "Martin Sanders",
+        "email": "martin@example.com"
+    },
+    {
+        "nombre": "Lee Jimenez",
+        "email": "lee@example.com"
+    },
+    {
+        "nombre": "Clark Foster",
+        "email": "clark@example.com"
+    },
+    {
+        "nombre": "Scott Russell",
+        "email": "scott@example.com"
+    },
+    {
+        "nombre": "Lewis Coleman",
+        "email": "lewis@example.com"
+    }
+]);
+
+cafeteria_2>db.empleado.find(); # Mostrar para verificar la insercion de los documentos. Trae una lista de documentos de 20 en 20
+cafeteria_2>it  # Traer los siguientes 20 en 20
+
+cafeteria_2>db.empleado.find().toArray(); #Traer todos los documentos y no en 20 en 20 de un solo tajo en un solo array podemos saturar la ram
+
+cafeteria_2>db.empleado.find().forEach((cafeData)=>{printjson(cafeData)});   # Iterar documento por documento con foreach para eso alteramos el cursor evitamos consumir memoria RAM porque trae uno por uno
+
+****************
+***   0012   ***   PROJECTION TRAER SOLO LOS CAMPOS QUE NECESITAMOS
+****************
+
+cafeteria_2>db.empleado.find();   # Trae todos los campos
+cafeteria_2>db.empleado.find({},{nombre: 1});   # Traemos todos los documentos pero solo campo nombre
+cafeteria_2>db.empleado.find({}, {nombre: 1, email: 1});  #El campo _id es un campo especial que siempre nos va a devolver
+cafeteria_2>db.empleado.find({},{nombre: 1, _id: 0});
+
+****************
+***   0013   ***   ACCEDIENDO A LA ESTRUCTURA DE DATOS
+****************
+
+test>use cafeteria_2;
+cafeteria_2>db.empleado.insertMany([
+    {
+        "nombre": "Mike Smith",
+        "email": "smith@example.com"
+    },
+    {
+        "nombre": "Johnson Gomez",
+        "email": "johnson@example.com"
+    },
+    {
+        "nombre": "Williams Evans",
+        "email": "williams@example.com"
+    },
+    {
+        "nombre": "Brown Phillips",
+        "email": "brown@example.com"
+    },
+    {
+        "nombre": "Jones Turner",
+        "email": "jones@example.com"
+    },
+    {
+        "nombre": "Garcia Diaz",
+        "email": "garcia@example.com"
+    },
+    {
+        "nombre": "Miller Cruz",
+        "email": "miller@example.com"
+    },
+    {
+        "nombre": "Davis Collins",
+        "email": "davis@example.com"
+    },
+    {
+        "nombre": "Rodriguez Cook",
+        "email": "rodriguez@example.com"
+    },
+    {
+        "nombre": "Martinez Cooper",
+        "email": "martinez@example.com"
+    },
+    {
+        "nombre": "Hernandez Bailey",
+        "email": "hernandez@example.com"
+    },
+    {
+        "nombre": "Alan Lopez ",
+        "email": "alan@example.com"
+    },
+    {
+        "nombre": "Joe Gonzalez ",
+        "email": "joe@example.com"
+    },
+    {
+        "nombre": "Wilson kim",
+        "email": "wilson@example.com"
+    },
+    {
+        "nombre": "Anderson Ramos",
+        "email": "anderson@example.com"
+    },
+    {
+        "nombre": "Thomas Watson",
+        "email": "thomas@example.com"
+    },
+    {
+        "nombre": "Taylor Ruiz",
+        "email": "taylor@example.com"
+    },
+    {
+        "nombre": "Jackson Myers",
+        "email": "jackson@example.com"
+    },
+    {
+        "nombre": "Martin Sanders",
+        "email": "martin@example.com"
+    },
+    {
+        "nombre": "Lee Jimenez",
+        "email": "lee@example.com"
+    },
+    {
+        "nombre": "Clark Foster",
+        "email": "clark@example.com"
+    },
+    {
+        "nombre": "Scott Russell",
+        "email": "scott@example.com"
+    },
+    {
+        "nombre": "Lewis Coleman",
+        "email": "lewis@example.com"
+    }
+]);
+
+cafeteria_2>db.empleado.updateOne({nombre: "Lewis Coleman"},{$set: {diaLaborable: ["Lunes","Martes","Miercoles","Jueves","Viernes"]}});
+
+cafeteria_2>db.empleado.find({nombre: "Lewis Coleman"});
+
+cafeteria_2>db.empleado.find({diaLaborable: "Jueves"});
+
+cafeteria_2>db.empleado.find({nombre: "Lewis Coleman"}).diaLaborable          # NO SALE
+--------------------------------------------------------------------------------
+cafeteria_2>db.empleado.deleteMany({}); # Eliminar todos los documentos de una colección
+cafeteria_2>db.empleado.find();
+
+cafeteria_2>db.dropDatabase();
+--------------------------------------------------------------------------------
+
+
+
+

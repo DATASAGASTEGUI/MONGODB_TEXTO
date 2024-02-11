@@ -1,0 +1,117 @@
+*****************
+***   INDEX   ***
+*****************
+
+--------------------------------------------------------------------------------
+0001   ***   BASE DE DATOS SQL VS BASE DE DATOS NOSQL
+0002   ***   QUE ES MONGODB
+0003   ***   INSTALACION DE MONGODB
+0004   ***   JSON
+0005   ***   CONCEPTOS DE UNA BASE DE DATOS MONGODB
+0006   ***   JSON VS BSON (VACIO)
+0007   ***   OPERACIONES CRUD
+0008   ***   PROFUNDIZANDO SOBRE INSERTONE Y INSERMANY
+0009   ***   PROFUNDIZANDO SOBRE LA BUSQUEDA DE UN DOCUMENTO
+0010   ***   PROFUNDIZANDO SOBRE UPDATEONE Y UPDATEMANY
+0011   ***   APRENDIENDO SOBRE FIND() Y CURSOR OBJECT (35)
+0012   ***   APRENDIENDO SOBR PROJECTION (36)
+0013   ***   ENTENDIENDO DOCUMENTOS EMBEBIDOS Y ARRAYS (37)
+0014   ***   TRABAJANDO CON DOCUMENTOS EMBEBIDOS (38)
+0015   ***   TRABAJANDO CON ARRAYS (39)
+0016   ***   ACCEDIENDO A LA ESTRUCTURA DE DATOS (40)
+0017   ***   TAREA 1: OPERACIONES CRUD BASICAS (DESPUES DE 40)
+0018   ***   CUESTIONARIO: OPERACIONES CRUD BASICAS (DESPUES DE 40) (FALTA)
+0019   ***   RECURSOS ADICIONALES (41)
+--------------------------------------------------------------------------------
+
+
+
+
+
+
+
+************************
+***   BIBLIOGRAFIA   ***
+************************
+
+GUIA COMPLETA MONGODB: APRENDE DESDE CERO HASTA EXPERTO
+https://www.udemy.com/course/guia-completa-mongodb/learn/lecture/38321408?start=15#overview
+
+
+
+
+
+***********************
+***   HERRAMIENTA   ***
+***********************
+
+
+
+
+**********************
+***   CARACTERES   ***
+**********************
+<
+>
+}
+{
+
+{}
+
+
+***************************************
+***   RESUMEN DE COMANDOS MONGODB   ***
+***************************************
+
+- INSERTAR MUCHOS DOCUMENTOS
+
+cafetera02>db.tipoCafe.insertMany([
+  {
+    _id: ObjectId('659c7cf5fec81003ac970d97'),
+    nombre: 'Isabel',
+    bebida: 'Café Expreso',
+    cantidad: 2,
+    stock: 80,
+    disponible: true,
+    etiqueta: 'Atendido',
+    precio: 5
+  },
+  {
+    _id: ObjectId('659c7de5fec81003ac970d98'),
+    nombre: 'Jhon',
+    bebida: 'Café Americano ',
+    cantidad: 3,
+    stock: 0,
+    disponible: false,
+    etiqueta: 'No atendido'
+  },
+  {
+    _id: ObjectId('659c7de5fec81003ac970d99'),
+    nombre: 'Jhon',
+    bebidas: 'Café Latte ',
+    cantidad: 1,
+    stock: 15,
+    disponible: true,
+    etiqueta: 'No atendido'
+  },
+  {
+    _id: ObjectId('659c7de5fec81003ac970d9a'),
+    nombre: 'Ana',
+    bebidas: 'Café Latte',
+    disponible: true
+  }
+]);
+
+- COMANDO PARA TRAER TODOS LOS DOCUMENTOS DE 20 EN 20
+cafetera02>db.empleado.find();
+cafetera02>it
+
+- COMANDO PARA FORZAR TRAER TODOS LOS DOCUMENTOS DE UN SOLO TIRON EN UNA LISTA
+cafetera02>db.empleado.find().toArray();
+
+- COMANDO PARA TRAER TODOS LOS DOCUMENTOS UNO A UNO
+cafetera02>db.empleado.find().forEach((x)=>{printjson(x)});
+
+- IMPORTAR UN DOCUMENTO JSON
+
+mongoimport Retail-product.json -d retail -c product --jsonArray --drop

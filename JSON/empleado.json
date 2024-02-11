@@ -1,0 +1,24 @@
+[
+    {
+        "_id": 100,
+        "nombre": "Hugo",
+        "apellido": "Lopez",
+        "cargo": "Developer",
+        "hobbies": [ "Futbol", "Basquet" ]
+    },
+    {
+        "_id": 101,
+        "nombre": "Martin",
+        "apellido": "Hernandez",
+        "cargo": "Business Intelligence",
+        "hobbies": [ "Tenis", "Natación", "Golf" ]
+    },
+    {
+        "_id": 102,
+        "nombre": "Fernanda",
+        "apellido": "Sanchez",
+        "cargo": "Business Analytics",
+        "hobbies": [ "Voley", "Natación" ]
+    }
+]
+
